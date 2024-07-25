@@ -1,0 +1,110 @@
+%% Obtain Peak Values
+% Extract peak values for the various stages of gait
+
+function [main_parameters] = stride_peak_values(forceStruct,Knee,thresholds,trial_name)
+%%
+time = forceStruct.time;
+ForceLT = abs(forceStruct.f1(:,2));
+ForceRT = abs(forceStruct.f2(:,2));
+
+%% Left
+[~, heel_strike_data_l,toe_off_data_l] = detect_cycles(ForceLT,time,thresholds); % positive (pos) and negative (neg) slope crossing points
+heel_time_l = round(cell2mat(heel_strike_data_l(:,1))*1000);
+toe_time_l = round(cell2mat(toe_off_data_l(:,1))*1000);
+nn_l = min(numel(heel_time_l(:,1)),numel(toe_time_l(:,1)));
+for time_index = 1:nn_l
+    if heel_time_l(time_index) > toe_time_l(time_index)
+        k=1;
+        for ci = 1:nn_l
+            swing_time_l(:,ci-1) = toe_time_l(ci):heel_time_l(ci);
+            main_parameters.left.swing_rom(k) = (180/pi)*abs(min(Knee.Left.flexion_angle(swing_time_l))-max(Knee.Left.flexion_angle(swing_time_l)));
+            k=k+1;
+        end
+    else
+        k=1;
+        for ci = 2:nn_l
+            swing_time_l = toe_time_l(ci-1):heel_time_l(ci);
+            main_parameters.left.swing_rom(k) = (180/pi)*abs(min(Knee.Left.flexion_angle(swing_time_l))-max(Knee.Left.flexion_angle(swing_time_l)));
+            k=k+1;
+        end
+    end
+    for ci = 1:size(Knee.Left.new_flexionmoment,2)
+
+        % Loading Stance
+        main_parameters.left.loading_stance.flexion(ci) = max(Knee.Left.new_flexionmoment(1:15,ci));
+        main_parameters.left.loading_stance.adduction(ci) = min(Knee.Left.new_ab_add_moment(1:15,ci));
+
+        % Early Stance
+        main_parameters.left.early_stance.flexion(ci) = min(Knee.Left.new_flexionmoment(15:40,ci));
+        main_parameters.left.early_stance.adduction(ci) = max(Knee.Left.new_ab_add_moment(15:40,ci));
+
+        % Mid Stance
+        main_parameters.left.mid_stance.flexion(ci) = max(Knee.Left.new_flexionmoment(40:60,ci));
+        main_parameters.left.mid_stance.adduction(ci) = min(Knee.Left.new_ab_add_moment(40:60,ci));
+        
+        % Late Stance
+        main_parameters.left.late_stance.adduction(ci) = max(Knee.Left.new_ab_add_moment(60:end,ci));
+
+        % Full Stance
+        main_parameters.left.full_stance.flexion(ci) = min(Knee.Left.new_flexionmoment(1:end,ci));
+        main_parameters.left.full_stance.adduction(ci) = max(Knee.Left.new_ab_add_moment(1:end,ci));
+
+        % Downhill Cases For late stancee
+        if ~contains(lower(trial_name),'downhill')
+            main_parameters.left.late_stance.flexion(ci) = max(Knee.Left.new_flexionmoment(60:end,ci));
+        else
+            main_parameters.left.late_stance.flexion(ci) = min(Knee.Left.new_flexionmoment(60:end,ci));
+        end
+
+    end
+end
+%% right
+[~, heel_strike_data_r,toe_off_data_r] = detect_cycles(ForceRT,time,thresholds); % positive (pos) and negative (neg) slope crossing points
+heel_time_r = round(cell2mat(heel_strike_data_r(:,1))*1000);
+toe_time_r = round(cell2mat(toe_off_data_r(:,1))*1000);
+nn_r = min(numel(heel_time_r(:,1)),numel(toe_time_r(:,1)));
+for time_index = 1:nn_r
+    if heel_time_r(time_index) > toe_time_r(time_index)
+        k=1;
+        for ci = 1:nn_r
+            swing_time = toe_time_r(ci):heel_time_r(ci);
+            main_parameters.right.swing_rom(ci) = (180/pi)*abs(min(Knee.Right.flexion_angle(round(swing_time)))-max(Knee.Right.flexion_angle(round(swing_time))));
+            k=k+1;
+        end
+    else
+        k=1;
+        for ci = 2:nn_r
+            swing_time = toe_time_r(ci-1):heel_time_r(ci);
+            main_parameters.right.swing_rom(k) = (180/pi)*abs(min(Knee.Right.flexion_angle(round(swing_time)))-max(Knee.Right.flexion_angle(round(swing_time))));
+            k=k+1;
+        end
+    end
+    for ci = 1:size(Knee.Right.new_flexionmoment,2)
+        % Loading Stance
+        main_parameters.right.loading_stance.flexion(ci) = max(Knee.Right.new_flexionmoment(1:15,ci));
+        main_parameters.right.loading_stance.adduction(ci) = max(Knee.Right.new_ab_add_moment(1:15,ci));
+
+        % Early Stance
+        main_parameters.right.early_stance.flexion(ci) = min(Knee.Right.new_flexionmoment(15:40,ci));
+        main_parameters.right.early_stance.adduction(ci) = min(Knee.Right.new_ab_add_moment(15:40,ci));
+
+        % Mid Stance
+        main_parameters.right.mid_stance.flexion(ci) = max(Knee.Right.new_flexionmoment(40:60,ci));
+        main_parameters.right.mid_stance.adduction(ci) = max(Knee.Right.new_ab_add_moment(40:60,ci));
+
+        % Late Stance
+        main_parameters.right.late_stance.adduction(ci) = min(Knee.Right.new_ab_add_moment(60:end,ci));
+
+        % Full Stance
+        main_parameters.right.full_stance.adduction(ci) = min(Knee.Right.new_ab_add_moment(1:end,ci));
+        main_parameters.right.full_stance.flexion(ci) = min(Knee.Right.new_flexionmoment(1:end,ci));
+        
+        % Downhill Cases For late stancee
+        if ~contains(lower(trial_name),'downhill')
+            main_parameters.right.late_stance.flexion(ci) = max(Knee.Right.new_flexionmoment(60:end,ci));
+        else
+            main_parameters.right.late_stance.flexion(ci) = min(Knee.Right.new_flexionmoment(60:end,ci));
+        end
+    end
+end
+end
