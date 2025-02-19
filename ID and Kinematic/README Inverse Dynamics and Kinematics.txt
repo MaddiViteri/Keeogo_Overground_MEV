@@ -45,7 +45,6 @@ Inverse_3D_Dynamics_7_18.m
 "stride_peak_values.m"
 - Extracts the peak values of a the measure based on the stage of stance (loading, early stance, mid stnace, and late stance)
 
-
 "gait_parameters_combined.m"
 - Combines the spatiotemporal values of the trials together
 
