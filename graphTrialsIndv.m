@@ -1,6 +1,6 @@
 %Herl-Keeogo Overground Protocol
 %Author: Maddi Viteri
-%Last Updated: 02/18/2025 (MATLAB R2024a)
+%Last Updated: 02/21/2025 (MATLAB R2024a)
 
 %this program plots COP and velocity for each trial
 
@@ -99,14 +99,14 @@ colorWay = 'parula'; %choices: 'parula' 'turbo' 'hsv' 'hot' 'cool' 'spring' 'sum
         patch(leftInsole.time(1:end-1), vel_LCOP, leftInsole.time(1:end-1),'EdgeColor', 'interp'); %time array is trimed b/c od diff function to calc velocity
         colormap(colorWay);
         xlabel("time (s)")
-        ylim([0 ylim_Max]); ylabel("distance (m)");
+        ylim([0 ylim_Max]); ylabel("velocity m/s");
         title("Left Insole: COP Velocity");
     
         subplot(2,2,4);
         patch(rightInsole.time(1:end-1), vel_RCOP, rightInsole.time(1:end-1),'EdgeColor', 'interp');
         colormap(colorWay);
         xlabel("time (s)");
-        ylim([0 ylim_Max]); ylabel("distance (m)");
+        ylim([0 ylim_Max]); ylabel("velocity m/s");
         title("Right Insole: COP Velocity");
     
     

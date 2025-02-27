@@ -1,6 +1,6 @@
 %Herl-Keeogo Overground Protocol
 %Author: Maddi Viteri
-%Last Updated: 02/18/2025 (MATLAB R2024a)
+%Last Updated: 02/23/2025 (MATLAB R2024a)
 
 %This program will process motion capture data collected from Vicon Nexus
 %2.13 and Noraxon Ultium Insoles and EMGS using the M4 version of the
@@ -19,23 +19,22 @@
 
 %Related .m files:
 %getDataVicon.m, getDataNoraxon.m, DataNoraxonConcat.m, graphTrialsIndv.m,
-%graphTrialsComp
+%graphTrialsComp, fToM.m, calDemographics.m
 
-%Requires
-%Image Processing Toolbox
+%Requires:
+%Image Processing Toolbox, Curve Fitting Toolbox, Signal Processing Toolbox
 
 %Next Features------------------------------------------------------------%
-%change cell arrays to structures
 %improve file matching so it always reads the "non" part no matter where it is
 %don't graph the NAN values or whatever those weird spikes are
 %only use getData functions if no data is loaded in the workspace
 
 %-------------------------------------------------------------------------%
 
-%clear workspace
-clc;
-close all;
-clear;
+% %clear workspace
+% clc;
+% close all;
+% clear;
 
 %GLOBAL VARIABLES
 
@@ -48,14 +47,24 @@ insole_m = struct('length',249,'forefootWidth',97,'usMenSize','6-7.5','usWomenSi
 insole_l = struct('length',265,'forefootWidth',97,'usMenSize','8-10.5','usWomenSize','11-13');
 insole_lx = struct('length',289,'forefootWidth',99,'usMenSize','11-13','usWomenSize','n/a');
 
+%participants
+p14 = struct('ID',14,'age',44,'height',"5'5",'weight',137.7,'gender','female','assistive_tech','no','insole_size',insole_sm);
+p15 = struct('ID',15,'age',66,'height',"5'8",'weight',200,'gender','male','assistive_tech','cane on left side','insole_size',insole_m);
+p16 = struct('ID',16,'age',60,'height',"6'0",'weight',196,'gender','male','assistive_tech','no','insole_size',insole_lx);
+p18 = struct('ID',18,'age',58,'height',"5'8",'weight',153,'gender','female','assistive_tech','no','insole_size',insole_m);
+
+participants = [p14, p15, p16, p18];
+
+[age, height, weight] = calcDemographics(participants);
+
 trialInsole = insole_l; %change size here for participants
 
 %import associated tools/libraries/packages
 import org.opensim.modeling.*
 
-%import data
-%browse for subject file 
-path_Data = uigetdir; %harddrive that participant data is stored on
+% %import data
+% %browse for subject file 
+% path_Data = uigetdir; %harddrive that participant data is stored on
 
 %get vicon data
 %[data_Vicon] = getDataVicon (path_Data); fprintf ('\n'); %fixes path (idk why just do it)
@@ -67,11 +76,72 @@ path_Data = uigetdir; %harddrive that participant data is stored on
 %Planter Pressure Parameters
 
 %get insole data
-[data_Noraxon] = getDataNoraxon (path_Data); fprintf ('\n'); 
+%[data_Noraxon] = getDataNoraxon (path_Data); fprintf ('\n'); 
 
 %GRAPHING
-graphTrialsIndv(trialnames_TRUE,data_Noraxon,trialInsole,path_Data);
+% 
+% % Loop over each dataset
+% for i = 1:8  % Iterating over the 8 datasets
+%     % Extract the current dataset (time and pressure)
+%     time = data_Noraxon(i).InsoleL.time;
+%     pressureL = data_Noraxon(i).InsoleL.LT_Insole_Total;
+%     pressureR = data_Noraxon(i).InsoleR.RT_Insole_Total;
+% 
+%     % Step 1: Plot the raw data
+%     figure;
+%     plot(time, pressureL);
+%     hold on
+%     plot(time,pressureR);
+%     hold off
+%     title(['Raw Pressure Data for Dataset ', num2str(i)]);
+%     xlabel('Time (s)');
+%     ylabel('Pressure (units)');
+% 
+%     % Step 2: Use ginput to select the start and end points of the region of interest
+%     disp('Click to select the start and end points for the region of interest');
+% 
+%     [x_points, ~] = ginput(2);  % Click twice to select two points (start and end)
+% 
+%     % Find the indices corresponding to the selected x points
+%     [~, start_index] = min(abs(time - x_points(1)));  % Find closest index to start point
+%     [~, end_index] = min(abs(time - x_points(2)));    % Find closest index to end point
+% 
+%     % Step 3: Extract the data between the selected indices
+%     extracted_time = time(start_index:end_index);
+%     extracted_pressure = pressureL(start_index:end_index);
+% 
+%     % Add the extracted region as structures to the current dataset
+%     data_Noraxon(i).InsoleL.startIndx = start_index;
+%     data_Noraxon(i).InsoleL.endIndx = end_index;
+% 
+%     data_Noraxon(i).InsoleR.startIndx = start_index;
+%     data_Noraxon(i).InsoleR.endIndx = end_index;
+% 
+%     % Step 4: Plot the extracted data
+%     % figure;
+%     % plot(extracted_time, extracted_pressure, 'b', 'LineWidth', 1.5);
+%     % title(['Extracted Data for Dataset ', num2str(i)]);
+%     % xlabel('Time (s)');
+%     % ylabel('Pressure (units)');
+% 
+%     % Optional: Display the updated structure to verify the changes
+%     disp(['Updated dataset ', num2str(i), ' with new regions.']);
+%     disp(data_Noraxon(i).InsoleL);
+% end
 
-graphTrialsComp(trialnames_TRUE,data_Noraxon,trialInsole,path_Data);
+%ap length / md width
 
-    
+[data_Noraxon] = calcAPMLV (data_Noraxon); %per trial
+
+[nss_AP, nfs_AP, kss_AP, kfs_AP] = combMedLengthAP (data_Noraxon); %combined
+
+[nss_ML, nfs_ML, kss_ML, kfs_ML] = combMedWidthML (data_Noraxon); %combined
+
+%veleocity (median, maximum and time to peak velocity % in trial of extracted data)
+
+% [data_Noraxon] = calcVel (data_Noraxon); %per trial
+
+[data_velocity] = combVel (data_Noraxon); %combined
+
+
+

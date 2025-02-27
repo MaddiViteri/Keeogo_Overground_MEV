@@ -1,14 +1,17 @@
 %Herl-Keeogo Overground Protocol
 %Author: Maddi Viteri
-%Last Updated: 02/07/2025
+%Last Updated: 02/23/2025
 
 %this program concatonates all the noraxon data and outputs it as a table
 %back to getDataNoraxon (it was just getting long and hard to troubleshoot
 %so i split it up)
 
+%Edit History
+%02/23/2025 - changed tables/cells to structures
+
 %-------------------------------------------------------------------------%
 
-function [data_Small] = DataNoraxonConcat (path)
+function [data_LeftInsole, data_LeftLeg, data_RightInsole, data_RightLeg] = DataNoraxonConcat (path)
 
     %Files needed from each trial folder (taken from noraxon output):
     %LT_MED, LT_RECT, LT_SEMI, RT_MED, RT_RECT, RT_SEMI, 
@@ -59,6 +62,7 @@ function [data_Small] = DataNoraxonConcat (path)
             %add data to data_Noraxon - different 
     
             data_temp = readtable(strcat(path,fileNames(loc)));
+            %data_temp = table2struct(data_temp,"ToScalar",true);
     
             %rename header variables
 
@@ -146,15 +150,18 @@ function [data_Small] = DataNoraxonConcat (path)
                 data_RightInsole = join(data_RightInsole,data_temp); 
                 data_RightInsole = renamevars(data_RightInsole,'value',fileNames_TRUE(j));
             end
-        
-            data_NoraxonSmall = {data_LeftLeg data_RightLeg data_LeftInsole data_RightInsole}; 
-            %disp("data concat sucessful"); %troubleshooting
-
-            data_Small = data_NoraxonSmall;
-            %disp("data exported to getDataNoraxon");%troubleshooting
 
         end%elseif
 
     end %end after all fileNames_True have been found and added to the table
+
+    %disp("data concat sucessful"); %troubleshooting
+
+    data_LeftLeg = table2struct(data_LeftLeg,"ToScalar",true); 
+    data_LeftInsole = table2struct(data_LeftInsole,"ToScalar",true);
+    data_RightLeg = table2struct(data_RightLeg,"ToScalar",true); 
+    data_RightInsole = table2struct(data_RightInsole,"ToScalar",true);
+
+    %disp("data exported to getDataNoraxon");%troubleshooting
     
 end%funtion
