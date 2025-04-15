@@ -31,10 +31,10 @@
 
 %-------------------------------------------------------------------------%
 
-% %clear workspace
-% clc;
-% close all;
-% clear;
+%clear workspace
+clc;
+close all;
+clear;
 
 %GLOBAL VARIABLES
 
@@ -63,8 +63,8 @@ trialInsole = insole_l; %change size here for participants
 import org.opensim.modeling.*
 
 % %import data
-% %browse for subject file 
-% path_Data = uigetdir; %harddrive that participant data is stored on
+%browse for subject file 
+path_Data = uigetdir; %harddrive that participant data is stored on
 
 %get vicon data
 %[data_Vicon] = getDataVicon (path_Data); fprintf ('\n'); %fixes path (idk why just do it)
@@ -76,58 +76,58 @@ import org.opensim.modeling.*
 %Planter Pressure Parameters
 
 %get insole data
-%[data_Noraxon] = getDataNoraxon (path_Data); fprintf ('\n'); 
+[data_Noraxon] = getDataNoraxon (path_Data); fprintf ('\n'); 
 
 %GRAPHING
-% 
-% % Loop over each dataset
-% for i = 1:8  % Iterating over the 8 datasets
-%     % Extract the current dataset (time and pressure)
-%     time = data_Noraxon(i).InsoleL.time;
-%     pressureL = data_Noraxon(i).InsoleL.LT_Insole_Total;
-%     pressureR = data_Noraxon(i).InsoleR.RT_Insole_Total;
-% 
-%     % Step 1: Plot the raw data
-%     figure;
-%     plot(time, pressureL);
-%     hold on
-%     plot(time,pressureR);
-%     hold off
-%     title(['Raw Pressure Data for Dataset ', num2str(i)]);
-%     xlabel('Time (s)');
-%     ylabel('Pressure (units)');
-% 
-%     % Step 2: Use ginput to select the start and end points of the region of interest
-%     disp('Click to select the start and end points for the region of interest');
-% 
-%     [x_points, ~] = ginput(2);  % Click twice to select two points (start and end)
-% 
-%     % Find the indices corresponding to the selected x points
-%     [~, start_index] = min(abs(time - x_points(1)));  % Find closest index to start point
-%     [~, end_index] = min(abs(time - x_points(2)));    % Find closest index to end point
-% 
-%     % Step 3: Extract the data between the selected indices
-%     extracted_time = time(start_index:end_index);
-%     extracted_pressure = pressureL(start_index:end_index);
-% 
-%     % Add the extracted region as structures to the current dataset
-%     data_Noraxon(i).InsoleL.startIndx = start_index;
-%     data_Noraxon(i).InsoleL.endIndx = end_index;
-% 
-%     data_Noraxon(i).InsoleR.startIndx = start_index;
-%     data_Noraxon(i).InsoleR.endIndx = end_index;
-% 
-%     % Step 4: Plot the extracted data
-%     % figure;
-%     % plot(extracted_time, extracted_pressure, 'b', 'LineWidth', 1.5);
-%     % title(['Extracted Data for Dataset ', num2str(i)]);
-%     % xlabel('Time (s)');
-%     % ylabel('Pressure (units)');
-% 
-%     % Optional: Display the updated structure to verify the changes
-%     disp(['Updated dataset ', num2str(i), ' with new regions.']);
-%     disp(data_Noraxon(i).InsoleL);
-% end
+
+% Loop over each dataset
+for i = 1:8  % Iterating over the 8 datasets
+    % Extract the current dataset (time and pressure)
+    time = data_Noraxon(i).InsoleL.time;
+    pressureL = data_Noraxon(i).InsoleL.LT_Insole_Total;
+    pressureR = data_Noraxon(i).InsoleR.RT_Insole_Total;
+
+    % Step 1: Plot the raw data
+    figure;
+    plot(time, pressureL);
+    hold on
+    plot(time,pressureR);
+    hold off
+    title(['Raw Pressure Data for Dataset ', num2str(i)]);
+    xlabel('Time (s)');
+    ylabel('Pressure (units)');
+
+    % Step 2: Use ginput to select the start and end points of the region of interest
+    disp('Click to select the start and end points for the region of interest');
+
+    [x_points, ~] = ginput(2);  % Click twice to select two points (start and end)
+
+    % Find the indices corresponding to the selected x points
+    [~, start_index] = min(abs(time - x_points(1)));  % Find closest index to start point
+    [~, end_index] = min(abs(time - x_points(2)));    % Find closest index to end point
+
+    % Step 3: Extract the data between the selected indices
+    extracted_time = time(start_index:end_index);
+    extracted_pressure = pressureL(start_index:end_index);
+
+    % Add the extracted region as structures to the current dataset
+    data_Noraxon(i).InsoleL.startIndx = start_index;
+    data_Noraxon(i).InsoleL.endIndx = end_index;
+
+    data_Noraxon(i).InsoleR.startIndx = start_index;
+    data_Noraxon(i).InsoleR.endIndx = end_index;
+
+    % Step 4: Plot the extracted data
+    % figure;
+    % plot(extracted_time, extracted_pressure, 'b', 'LineWidth', 1.5);
+    % title(['Extracted Data for Dataset ', num2str(i)]);
+    % xlabel('Time (s)');
+    % ylabel('Pressure (units)');
+
+    % Optional: Display the updated structure to verify the changes
+    disp(['Updated dataset ', num2str(i), ' with new regions.']);
+    disp(data_Noraxon(i).InsoleL);
+end
 
 %ap length / md width
 
