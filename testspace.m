@@ -1,0 +1,1 @@
+[disp, Vel, t2_maxVel] = calcData(data_Noraxon,trialnames_TRUE);
