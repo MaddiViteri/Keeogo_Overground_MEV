@@ -9,7 +9,7 @@ clear
 import org.opensim.modeling.*
 %% Copy data address
 
-trial_path ='E:\New folder (2)\06\Downhill';%
+trial_path = uigetdir;%
 % trial_path = 'F:\Keeogo_Exoskeleton\02\Downhill';
 
 
@@ -26,6 +26,9 @@ gender = anthropometrics(3);
 keeogo = anthropometrics(4);
 severe = anthropometrics(5);
 participant_number = string(anthropometrics(6));
+
+
+
 %% Get files
 for n = 3:length(file_names) % First 2 files are blank in file names
     true_name{n} = file_names{n}; % reassign file names to true names
@@ -94,7 +97,10 @@ end
 % Remove empty cells
 trial_name = trial_name(~cellfun('isempty',trial_name)); 
 static_trial_name = static_trial_name(~cellfun('isempty',static_trial_name));
-platform_files = platform_files(1,3:end);
+disp(class(platform_files));
+
+platform_files = platform_files(3:end);
+
 zcr_threshold = 50;
 tic
 % Process all trials for the Slope
@@ -131,78 +137,7 @@ end
 %% Plot Data of the Combined Trials
 [Knee_combine] = plot_function(knee);
 
-%% EMG
-% emg_freq = 2000; 
-% % Set Path for EMG data Location
-% % emg_path = 'C:\Users\MII36\University of Pittsburgh\Keeogo Project - Documents\Pilot Testing\09-08-23\09-08-23\Keeogo_Exoskeleton\m, l\Comparison_setup';
-% % emg_path = 'C:\Users\MII36\University of Pittsburgh\Keeogo Project - Documents\Pilot Testing\09-08-23\09-08-23\Keeogo_Exoskeleton\m, l\Our_set_up';
-% emg_path = 'C:\Users\MII36\University of Pittsburgh\Keeogo Project - Documents\Data Processing\Pilot Testing\7-23-23\EMG\Keeogo_Exoskeleton\G, D';
-% % emg_path = 'E:\New folder (2)\06\Keeogo_Exoskeleton\06';
-% 
-% % Assign muscle names
-% muscle_names = {'lgas','rgas','lham','rham','lquad','rquad'};
-% 
-% trial_name = trial_name(~cellfun('isempty',trial_name));
-% 
-% % Filter EMG Data
-% [all_data,emg_trial_names] = emgAnalysis(emg_path,muscle_names);
-% 
-% % Normalize EMG data for EMG and RMS
-% [all_data_norm2] = MVCNormalization2(all_data,emg_trial_names,trial_name,muscle_names,'emg');
-% [all_data_norm2_rms] = MVCNormalization2(all_data,emg_trial_names,trial_name,muscle_names,'rms');
-% 
-% % Process all trials for the Slope
-% for x = 1:length(trial_name)
-%     for y = 1:length(emg_trial_names)
-% 
-%         % Calculate for Co-activation (CCI) (directionality)
-%         [all_data_norm2] = coactivationratio_zero(all_data_norm2,emg_trial_names{y},muscle_names,trial.(trial_name{x}).force,trial_name{x},zcr_threshold);
-%         % Calculate Co-activation (CCR) (Magnitude)
-%         [all_data_norm2_rms] = coactivationratio_09_01_rms(all_data_norm2_rms,emg_trial_names{y},muscle_names,trial.(trial_name{x}).force,trial_name{x},zcr_threshold);
-% 
-%         % Calculate swing values
-%         [all_data_norm2_rms] = swing_data_8_25_rms(all_data_norm2_rms,emg_trial_names{y},muscle_names,trial.(trial_name{x}).force,trial_name{x},zcr_threshold);
-%     end
-% end
-
-%% Combine EMG trials
-% [emg_stance_metrics_rms, emg_stance_metrics_combined_rms,emg_metrics_trials_rms]...
-%     = emg_parameters_combined(all_data_norm2_rms);
-% 
-% [emg_stance_metrics, emg_stance_metrics_combined,emg_metrics_trials]...
-%     = emg_parameters_combined(all_data_norm2);
-% 
-% [emg_swing_metrics, emg_swing_metrics_combined,used_trials]...
-%     = emg_parameters_combined_swing_rms(all_data_norm2_rms);
-
-%% Plot EMG
-% [stuff] = emg_plots(emg_stance_metrics_combined_rms,emg_stance_metrics_combined,emg_swing_metrics_combined);
-%% Table
-save_file_folder =  'C:\Users\MII36\University of Pittsburgh\Keeogo Project - Documents\Data Processing\Keeogo Data Analysis\Excel_Files\Downhill';
-
-% % ID and EMG
-% [stride_length,loading_stance,early_stance,mid_stance,late_stance,ROM] =...
-%     stats_table(gait_metrics_full,gait_emg_metrics,gait_emg_metrics_rms,...
-%     main_parameters_full,participant_number);
-% [loading_stance,early_stance,mid_stance,late_stance,combined] =...
-%     stats_table(gait_emg_metrics,gait_emg_metrics_rms,participant_number);
-% [loading_stance,early_stance,mid_stance,late_stance] =...
-%     stats_table(gait_emg_metrics,gait_emg_metrics_rms,participant_number);
-% % No EMG
-% [stride_length,loading_stance,early_stance,mid_stance,late_stance,full_stance,ROM] =...
-%     stats_table_no_emg(gait_metrics_full,...
-%     main_parameters_full,participant_number);
 % Mean w/o EMG
 [gait_parameters_combined,loading_stance,early_stance,mid_stance,late_stance,full_stance,ROM,more_severe,less_severe] =...
     stats_table_no_emg_mean(gait_metrics_mean,...
     main_parameters_mean,participant_number,trial_name,severe,save_file_folder);
-% % Mean w/ EMG
-% [gait_parameters_combined,loading_stance,early_stance,mid_stance,late_stance,full_stance,ROM,swing] =...
-%     stats_table_w_emg_mean(gait_metrics_mean,...
-%     main_parameters_mean,participant_number);
-%% Stats analysis
-% [loading_stance,mid_stance,late_stance,ROM,stride_length]=...
-%     statistcal_tests(loading_stance,mid_stance,late_stance,...
-%     gait_emg_metrics,gait_emg_metrics_rms,main_parameters_full,gait_metrics_full);
-%   % [loading_stance,early_stance,mid_stance,late_stance]=...
-%   %   statistcal_tests(loading_stance,early_stance,mid_stance,late_stance,gait_emg_metrics,gait_emg_metrics_rms);

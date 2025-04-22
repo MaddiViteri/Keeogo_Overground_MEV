@@ -122,9 +122,8 @@ left_thigh2kjc_zal = kjc.left(3) - left.static_COM(3);
 left_thigh2kjc_al = [left_thigh2kjc_xal;left_thigh2kjc_yal;left_thigh2kjc_zal];
 left_an_kjc = LLG2A*left_thigh2kjc_al;
 %% Cluster center
-% Right
-right_thigh_cluster = mean([static_markerStruct.RAntInfLatThigh;static_markerStruct.RAntInfMedThigh;...
-    static_markerStruct.RPosThigh;static_markerStruct.RAntSupThigh],"omitnan");
+right_thigh_cluster = mean([static_markerStruct.RAntLatThigh;static_markerStruct.RAntMedThigh;...
+    static_markerStruct.RPosLatThigh;static_markerStruct.RPosMedThigh],"omitnan");
 right_thigh2cluster_xal = mean(right_thigh_cluster(:,1),"omitnan") - right.static_COM(1);
 right_thigh2cluster_yal = mean(right_thigh_cluster(:,2),"omitnan") - right.static_COM(2);
 right_thigh2cluster_zal = mean(right_thigh_cluster(:,3),"omitnan") - right.static_COM(3);
@@ -132,8 +131,8 @@ right_thigh2cluster_al = [right_thigh2cluster_xal;right_thigh2cluster_yal;right_
 right_an_cluster = RLG2A*right_thigh2cluster_al;
 
 % Left
-left_thigh_cluster = mean([static_markerStruct.LAntInfLatThigh;static_markerStruct.LAntInfMedThigh;...
-    static_markerStruct.LPosThigh;static_markerStruct.LAntSupThigh],"omitnan");
+left_thigh_cluster = mean([static_markerStruct.LAntLatThigh;static_markerStruct.LAntMedThigh;...
+    static_markerStruct.LPosLatThigh;static_markerStruct.LPosMedThigh],"omitnan");
 left_thigh2cluster_xal = mean(left_thigh_cluster(:,1),"omitnan") - left.static_COM(1);
 left_thigh2cluster_yal = mean(left_thigh_cluster(:,2),"omitnan") - left.static_COM(2);
 left_thigh2cluster_zal = mean(left_thigh_cluster(:,3),"omitnan") - left.static_COM(3);
@@ -142,46 +141,46 @@ left_an_cluster = LLG2A*left_thigh2cluster_al;
 
 %% Ant Lat Thigh
 % Right
-right_thigh2antlat_xal = mean(static_markerStruct.RAntInfLatThigh(:,1),"omitnan") - right.static_COM(1);
-right_thigh2antlat_yal = mean(static_markerStruct.RAntInfLatThigh(:,2),"omitnan") - right.static_COM(2);
-right_thigh2antlat_zal = mean(static_markerStruct.RAntInfLatThigh(:,3),"omitnan") - right.static_COM(3);
+right_thigh2antlat_xal = mean(static_markerStruct.RAntLatThigh(:,1),"omitnan") - right.static_COM(1);
+right_thigh2antlat_yal = mean(static_markerStruct.RAntLatThigh(:,2),"omitnan") - right.static_COM(2);
+right_thigh2antlat_zal = mean(static_markerStruct.RAntLatThigh(:,3),"omitnan") - right.static_COM(3);
 right_thigh2antlat_al = [right_thigh2antlat_xal;right_thigh2antlat_yal;right_thigh2antlat_zal];
 right_an_antlat = RLG2A*right_thigh2antlat_al;
 
 % Left
-left_thigh2antlat_xal = mean(static_markerStruct.LAntInfLatThigh(:,1),"omitnan") - left.static_COM(1);
-left_thigh2antlat_yal = mean(static_markerStruct.LAntInfLatThigh(:,2),"omitnan") - left.static_COM(2);
-left_thigh2antlat_zal = mean(static_markerStruct.LAntInfLatThigh(:,3),"omitnan") - left.static_COM(3);
+left_thigh2antlat_xal = mean(static_markerStruct.LAntLatThigh(:,1),"omitnan") - left.static_COM(1);
+left_thigh2antlat_yal = mean(static_markerStruct.LAntLatThigh(:,2),"omitnan") - left.static_COM(2);
+left_thigh2antlat_zal = mean(static_markerStruct.LAntLatThigh(:,3),"omitnan") - left.static_COM(3);
 left_thigh2antlat_al = [left_thigh2antlat_xal;left_thigh2antlat_yal;left_thigh2antlat_zal];
 left_an_antlat = LLG2A*left_thigh2antlat_al;
 
 %% Ant med thigh
 % Right
-right_thigh2antmed_xal = mean(static_markerStruct.RAntInfMedThigh(:,1),"omitnan") - right.static_COM(1);
-right_thigh2antmed_yal = mean(static_markerStruct.RAntInfMedThigh(:,2),"omitnan") - right.static_COM(2);
-right_thigh2antmed_zal = mean(static_markerStruct.RAntInfMedThigh(:,3),"omitnan") - right.static_COM(3);
+right_thigh2antmed_xal = mean(static_markerStruct.RAntMedThigh(:,1),"omitnan") - right.static_COM(1);
+right_thigh2antmed_yal = mean(static_markerStruct.RAntMedThigh(:,2),"omitnan") - right.static_COM(2);
+right_thigh2antmed_zal = mean(static_markerStruct.RAntMedThigh(:,3),"omitnan") - right.static_COM(3);
 right_thigh2antmed_al = [right_thigh2antmed_xal;right_thigh2antmed_yal;right_thigh2antmed_zal];
 right_an_antmed = RLG2A*right_thigh2antmed_al;
 
 % Left
-left_thigh2antmed_xal = mean(static_markerStruct.LAntInfMedThigh(:,1),"omitnan") - left.static_COM(1);
-left_thigh2antmed_yal = mean(static_markerStruct.LAntInfMedThigh(:,2),"omitnan") - left.static_COM(2);
-left_thigh2antmed_zal = mean(static_markerStruct.LAntInfMedThigh(:,3),"omitnan") - left.static_COM(3);
+left_thigh2antmed_xal = mean(static_markerStruct.LAntMedThigh(:,1),"omitnan") - left.static_COM(1);
+left_thigh2antmed_yal = mean(static_markerStruct.LAntMedThigh(:,2),"omitnan") - left.static_COM(2);
+left_thigh2antmed_zal = mean(static_markerStruct.LAntMedThigh(:,3),"omitnan") - left.static_COM(3);
 left_thigh2antmed_al = [left_thigh2antmed_xal;left_thigh2antmed_yal;left_thigh2antmed_zal];
 left_an_antmed = LLG2A*left_thigh2antmed_al;
 
 %% Pos Med thigh
 % Right
-right_thigh2posmed_xal = mean(static_markerStruct.RAntSupThigh(:,1),"omitnan") - right.static_COM(1);
-right_thigh2posmed_yal = mean(static_markerStruct.RAntSupThigh(:,2),"omitnan") - right.static_COM(2);
-right_thigh2posmed_zal = mean(static_markerStruct.RAntSupThigh(:,3),"omitnan") - right.static_COM(3);
+right_thigh2posmed_xal = mean(static_markerStruct.RPosMedThigh(:,1),"omitnan") - right.static_COM(1);
+right_thigh2posmed_yal = mean(static_markerStruct.RPosMedThigh(:,2),"omitnan") - right.static_COM(2);
+right_thigh2posmed_zal = mean(static_markerStruct.RPosMedThigh(:,3),"omitnan") - right.static_COM(3);
 right_thigh2posmed_al = [right_thigh2posmed_xal;right_thigh2posmed_yal;right_thigh2posmed_zal];
 right_an_posmed = RLG2A*right_thigh2posmed_al;
 
 % Left
-left_thigh2posmed_xal = mean(static_markerStruct.LAntSupThigh(:,1),"omitnan") - left.static_COM(1);
-left_thigh2posmed_yal = mean(static_markerStruct.LAntSupThigh(:,2),"omitnan") - left.static_COM(2);
-left_thigh2posmed_zal = mean(static_markerStruct.LAntSupThigh(:,3),"omitnan") - left.static_COM(3);
+left_thigh2posmed_xal = mean(static_markerStruct.LPosMedThigh(:,1),"omitnan") - left.static_COM(1);
+left_thigh2posmed_yal = mean(static_markerStruct.LPosMedThigh(:,2),"omitnan") - left.static_COM(2);
+left_thigh2posmed_zal = mean(static_markerStruct.LPosMedThigh(:,3),"omitnan") - left.static_COM(3);
 left_thigh2posmed_al = [left_thigh2posmed_xal;left_thigh2posmed_yal;left_thigh2posmed_zal];
 left_an_posmed = LLG2A*left_thigh2posmed_al;
 
@@ -222,19 +221,19 @@ left_globe_zm = zeros(length(markerStruct.RLatMal),3);
 right_globe2mark = zeros(3,3,length(markerStruct.RLatMal));
 left_globe2mark = zeros(3,3,length(markerStruct.RLatMal));
 
-right_globe_zm = (markerStruct.RAntInfMedThigh - markerStruct.RAntInfLatThigh)./...
-    sqrt(sum((markerStruct.RAntInfMedThigh - markerStruct.RAntInfLatThigh).^2,2));
-right_globe_am = (markerStruct.RAntSupThigh - markerStruct.RAntInfLatThigh)./...
-    sqrt(sum((markerStruct.RAntSupThigh - markerStruct.RAntInfLatThigh).^2,2));
+right_globe_zm = (markerStruct.RAntMedThigh - markerStruct.RAntLatThigh)./...
+    sqrt(sum((markerStruct.RAntMedThigh - markerStruct.RAntLatThigh).^2,2));
+right_globe_am = (markerStruct.RPosMedThigh - markerStruct.RAntLatThigh)./...
+    sqrt(sum((markerStruct.RPosMedThigh - markerStruct.RAntLatThigh).^2,2));
 right_globe_ym = cross(right_globe_zm,right_globe_am,2);
 right_globe_ym = right_globe_ym./sqrt(sum(right_globe_ym.^2,2));
 right_globe_xm = cross(right_globe_ym, right_globe_zm,2);
 right_globe_xm = right_globe_xm./sqrt(sum(right_globe_xm.^2,2));
 
-left_globe_zm = (markerStruct.LAntInfMedThigh - markerStruct.LAntInfLatThigh)./...
-    sqrt(sum((markerStruct.LAntInfMedThigh - markerStruct.LAntInfLatThigh).^2,2));
-left_globe_am = (markerStruct.LAntSupThigh - markerStruct.LAntInfLatThigh)./...
-    sqrt(sum((markerStruct.LAntSupThigh - markerStruct.LAntInfLatThigh).^2,2));
+left_globe_zm = (markerStruct.LAntMedThigh - markerStruct.LAntLatThigh)./...
+    sqrt(sum((markerStruct.LAntMedThigh - markerStruct.LAntLatThigh).^2,2));
+left_globe_am = (markerStruct.LPosMedThigh - markerStruct.LAntLatThigh)./...
+    sqrt(sum((markerStruct.LPosMedThigh - markerStruct.LAntLatThigh).^2,2));
 left_globe_ym = cross(left_globe_zm,left_globe_am,2);
 left_globe_ym = left_globe_ym./sqrt(sum(left_globe_ym.^2,2));
 left_globe_xm = cross(left_globe_ym,left_globe_zm,2);
@@ -327,20 +326,20 @@ end
 
 %% Cluster position
 % Right
-right_thigh_cluster_globe(:,1) = mean([markerStruct.RAntInfLatThigh(:,1),markerStruct.RAntInfMedThigh(:,1), ...
-    markerStruct.RPosThigh(:,1),markerStruct.RAntSupThigh(:,1)],2,"omitnan");
-right_thigh_cluster_globe(:,2) = mean([markerStruct.RAntInfLatThigh(:,2),markerStruct.RAntInfMedThigh(:,2), ...
-    markerStruct.RPosThigh(:,2),markerStruct.RAntSupThigh(:,2)],2,"omitnan");
-right_thigh_cluster_globe(:,3) = mean([markerStruct.RAntInfLatThigh(:,3),markerStruct.RAntInfMedThigh(:,3), ...
-    markerStruct.RPosThigh(:,3),markerStruct.RAntSupThigh(:,3)],2,"omitnan");
+right_thigh_cluster_globe(:,1) = mean([markerStruct.RAntLatThigh(:,1),markerStruct.RAntMedThigh(:,1), ...
+    markerStruct.RPosLatThigh(:,1),markerStruct.RPosMedThigh(:,1)],2,"omitnan");
+right_thigh_cluster_globe(:,2) = mean([markerStruct.RAntLatThigh(:,2),markerStruct.RAntMedThigh(:,2), ...
+    markerStruct.RPosLatThigh(:,2),markerStruct.RPosMedThigh(:,2)],2,"omitnan");
+right_thigh_cluster_globe(:,3) = mean([markerStruct.RAntLatThigh(:,3),markerStruct.RAntMedThigh(:,3), ...
+    markerStruct.RPosLatThigh(:,3),markerStruct.RPosMedThigh(:,3)],2,"omitnan");
 
 % Left
-left_thigh_cluster_globe(:,1) = mean([markerStruct.LAntInfLatThigh(:,1),markerStruct.LAntInfMedThigh(:,1), ...
-    markerStruct.LPosThigh(:,1),markerStruct.LAntSupThigh(:,1)],2,"omitnan");
-left_thigh_cluster_globe(:,2) = mean([markerStruct.LAntInfLatThigh(:,2),markerStruct.LAntInfMedThigh(:,2), ...
-    markerStruct.LPosThigh(:,2),markerStruct.LAntSupThigh(:,2)],2,"omitnan");
-left_thigh_cluster_globe(:,3) = mean([markerStruct.LAntInfLatThigh(:,3),markerStruct.LAntInfMedThigh(:,3), ...
-    markerStruct.LPosThigh(:,3),markerStruct.LAntSupThigh(:,3)],2,"omitnan");
+left_thigh_cluster_globe(:,1) = mean([markerStruct.LAntLatThigh(:,1),markerStruct.LAntMedThigh(:,1), ...
+    markerStruct.LPosLatThigh(:,1),markerStruct.LPosMedThigh(:,1)],2,"omitnan");
+left_thigh_cluster_globe(:,2) = mean([markerStruct.LAntLatThigh(:,2),markerStruct.LAntMedThigh(:,2), ...
+    markerStruct.LPosLatThigh(:,2),markerStruct.LPosMedThigh(:,2)],2,"omitnan");
+left_thigh_cluster_globe(:,3) = mean([markerStruct.LAntLatThigh(:,3),markerStruct.LAntMedThigh(:,3), ...
+    markerStruct.LPosLatThigh(:,3),markerStruct.LPosMedThigh(:,3)],2,"omitnan");
 
 %% Knee joint position
 for i = 1:length(right_ana2globe)
