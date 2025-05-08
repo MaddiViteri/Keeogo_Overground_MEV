@@ -4,11 +4,12 @@
 % thresholds = 50;
 %%
 function [gait_parameters] = SpatioTemporal(forceStruct,markerStruct,trial_file,thresholds)
-%%
+
 % Rename variables
 time = forceStruct.time;
 ForceLT = forceStruct.f1(:,2);
 ForceRT = forceStruct.f2(:,2); 
+
 
 %% Left
 % Determine contacts
@@ -16,7 +17,18 @@ ForceRT = forceStruct.f2(:,2);
 heel_time_l = round(cell2mat(heel_strike_data_l(:,1))*1000);
 toe_time_l = round(cell2mat(toe_off_data_l(:,1))*1000);
 % Upsample platform data to match force data length
-test = ScaleTime(trial_file,1,length(trial_file),length(ForceLT));
+
+trial_fileLength = height(trial_file);
+
+disp(trial_fileLength);
+
+ForceLTLength = height(ForceLT);
+
+trial_file = table2array(trial_file);
+
+class(trial_file); class(trial_fileLength); class(ForceLTLength);
+
+test = ScaleTime(trial_file,1,trial_fileLength,ForceLTLength);
 % min # number of steps detected
 nn_l = min(numel(heel_time_l),numel(toe_time_l));
 
@@ -148,6 +160,7 @@ for i= 2:min(nn_r,nn_l)-1
     end
     k=k+1;
 end
+
 gait_parameters.total.single_support = [gait_parameters.right.single_support,gait_parameters.left.single_support];
 
 gait_parameters.total.speed = test(50000:end,4)';
