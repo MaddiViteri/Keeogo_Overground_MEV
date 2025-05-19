@@ -22,10 +22,10 @@ disp("inside inverse_3D function");
     right_seg_alpha,left_seg_alpha,right_ang,right_omega,right_alpha,...
     left_alpha] = calibrationmatrix_6_27_debug(inverse_static_markerStruct,inverse_markerStruct);
 
-disp("shank: after calibrationmatrix");
-        disp(class(trial_name)); disp(trial_name); %debugging
-        whos inverse_static_markerStruct
-        %disp(fieldnames(inverse_static_markerStruct));
+% disp("shank: after calibrationmatrix");
+%         disp(class(trial_name)); disp(trial_name); %debugging
+%         whos inverse_static_markerStruct
+%         %disp(fieldnames(inverse_static_markerStruct));
 
 % Foot
 [foot_right_globe2ana,foot_left_globe2ana,foot_right_seg_omega,...
@@ -33,10 +33,10 @@ disp("shank: after calibrationmatrix");
     foot_right_ang,foot_right_omega,foot_right_alpha,foot_left_alpha] ...
     = calibrationmatrix_foot_6_27(inverse_static_markerStruct,inverse_markerStruct);
 
-disp("foot: after calibrationmatrix");
-        disp(class(trial_name)); disp(trial_name); %debugging
-        whos inverse_static_markerStruct
-        %disp(fieldnames(inverse_static_markerStruct));
+% disp("foot: after calibrationmatrix");
+%         disp(class(trial_name)); disp(trial_name); %debugging
+%         whos inverse_static_markerStruct
+%         %disp(fieldnames(inverse_static_markerStruct));
 
 % Thigh
 [right_globe2ana_thigh,left_globe2ana_thigh,right_ana2globe_thigh,...
@@ -45,10 +45,10 @@ disp("foot: after calibrationmatrix");
     right_omega_thigh,right_alpha_thigh,left_alpha_thigh,RKJC_ana,LKJC_ana]...
     = calibrationmatrix_thigh(inverse_static_markerStruct,inverse_markerStruct);
 
-disp("thigh: after calibrationmatrix");
-        disp(class(trial_name)); disp(trial_name); %debugging
-        whos inverse_static_markerStruct
-        %disp(fieldnames(inverse_static_markerStruct));
+% disp("thigh: after calibrationmatrix");
+%         disp(class(trial_name)); disp(trial_name); %debugging
+%         whos inverse_static_markerStruct
+%         %disp(fieldnames(inverse_static_markerStruct));
 
 %%
     % FP filter

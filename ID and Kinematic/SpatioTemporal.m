@@ -9,7 +9,7 @@ function [gait_parameters] = SpatioTemporal(forceStruct,markerStruct,trial_file,
 time = forceStruct.time;
 ForceLT = forceStruct.f1(:,2);
 ForceRT = forceStruct.f2(:,2); 
-
+gait_parameters = struct();
 
 %% Left
 % Determine contacts
@@ -161,7 +161,9 @@ for i= 2:min(nn_r,nn_l)-1
     k=k+1;
 end
 
-gait_parameters.total.single_support = [gait_parameters.right.single_support,gait_parameters.left.single_support];
+temp_gaitRight = gait_parameters.right.single_support;
+temp_gaitLeft = gait_parameters.left.single_support;
+gait_parameters.total.single_support = [temp_gaitRight,temp_gaitLeft];
 
 gait_parameters.total.speed = test(50000:end,4)';
 

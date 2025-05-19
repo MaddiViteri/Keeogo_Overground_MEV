@@ -60,6 +60,7 @@ if ~use_existing
         "VariableTypes", repmat("double", 1, 7), ...
         "ExtraColumnsRule", "ignore", ...
         "EmptyLineRule", "read");
+end
         
 %% Parse Files
 for n = 1:length(file_names)
@@ -166,30 +167,35 @@ platform_fields = fieldnames(platform);
 gait_parameters = struct();
 main_parameters = struct();
 
+disp('Available platform fields:');
+disp(platform_fields);
+
 for i = 1:numel(trial_fields)
     fname = trial_fields{i};
     
     disp(['Processing gait parameters for trial: ', fname]);
-    disp('Available platform fields:');
-    disp(platform_fields);
 
-    if isfield(platform, fname)
+    if ~isfield(platform, fname)
+        warning('No matching platform data for trial: %s. Skipping gait analysis.', fname);
+        continue; % Skip to next trial
+    end
+
+    try
         gait_parameters.(fname) = SpatioTemporal( ...
             trial.(fname).force, ...
             trial.(fname).markers, ...
             platform.(fname), ...
             zcr_threshold);
-    else
-        
-        warning('No matching platform data for trial: %s. Skipping gait analysis.', fname);
-        continue; % Skip to next trial
+    catch ME
+        if contains(ME.message, 'Unrecognized field name "single_support')
+            warning('SpatioTemporal failed for trial %s: %s. Skipping.', fname, ME.message);
+            continue; % Skip to next trial
+        else
+            rethrow(ME); % Re-throw if it's a different error
+        end
     end
-    
-    main_parameters.(fname) = stride_peak_values( ...
-        trial.(fname).force, ...
-        knee.(fname), ...
-        zcr_threshold, ...
-        fname);
+
+    main_parameters.(fname) = stride_peak_values(trial.(fname).force, knee.(fname), zcr_threshold, fname);
 end
 
 
@@ -213,13 +219,7 @@ if ~isempty(fieldnames(gait_parameters))
 
         Knee_combine = plot_function(knee);
 
-        [gait_parameters_combined, loading_stance, early_stance, mid_stance, ...
-         late_stance, full_stance, ROM, more_severe, less_severe] = ...
-            stats_table_no_emg_mean(gait_metrics_mean, main_parameters_mean, ...
-            p_num, trial_name, severe, save_file_folder);
-    else
-        error('No valid platform data found for any trials. Please check input files.');
-    end
+        [gait_parameters_combined, loading_stance, early_stance, mid_stance, late_stance, full_stance, ROM, more_severe, less_severe] = stats_table_no_emg_mean(gait_metrics_mean, main_parameters_mean, p_num, trial_name, severe, 'stats_table_no_emg_mean');
     else
         error('No gait parameter data found. Please verify platform and trial data were processed.');
     end
